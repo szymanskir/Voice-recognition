@@ -1,5 +1,5 @@
 import numpy as np
-import scipy.io.wavfile
+from numpy import linalg
 
 
 def dynamic_time_warping(x, y):
@@ -14,7 +14,7 @@ def dynamic_time_warping(x, y):
     distance_matrix = np.zeros((len(x), len(y)), dtype=np.int16);
     for i in range(0, len(x)):
         for j in range(0, len(y)):
-            distance_matrix[i, j] = abs(x[i] - y[j])
+            distance_matrix[i, j] = linalg.norm(x[i] - y[j])
 
     # initialize dtw matrix
     dtw_matrix = np.zeros((len(x), len(y)), dtype=np.int16)
@@ -74,14 +74,4 @@ def dynamic_time_warping(x, y):
     plt.show()
     """
     return dtw_matrix[len(x)-1, len(y)-1]
-
-
-def euclidean_distance(a, b):
-    """
-    Calculates the euclidian distance between a,b
-    :param a: first number
-    :param b: second number
-    :return: distance between a and b
-    """
-    return np.abs(a - b)
 
