@@ -1,5 +1,4 @@
-from numpy import linalg, zeros
-
+import numpy as np
 
 def dynamic_time_warping(x, y):
     """
@@ -10,13 +9,13 @@ def dynamic_time_warping(x, y):
     """
 
     # create local distance matrix
-    distance_matrix = zeros((len(x), len(y)));
+    distance_matrix = np.zeros((len(x), len(y)));
     for i in range(0, len(x)):
         for j in range(0, len(y)):
-            distance_matrix[i, j] = linalg.norm(x[i] - y[j])
+            distance_matrix[i, j] = np.linalg.norm(x[i] - y[j])
 
     # initialize dtw matrix
-    dtw_matrix = zeros((len(x), len(y)))
+    dtw_matrix = np.zeros((len(x), len(y)))
     dtw_matrix[0, 0] = distance_matrix[0, 0]
 
     # first column initialization
@@ -34,3 +33,6 @@ def dynamic_time_warping(x, y):
 
     return dtw_matrix[len(x)-1, len(y)-1]
 
+
+def dist(x, y):
+    return np.sqrt(np.sum((x-y)**2))

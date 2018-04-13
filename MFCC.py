@@ -29,8 +29,8 @@ def voice_feature_extraction(infile):
     signal = pre_emphasis(signal)
 
     # divide into n[ms] overlapping frames
-    n = 25
-    step_ms = 10
+    n = 40
+    step_ms = 25
     samples_per_frame = int(sampling_rate/1000 * n)
     frame_step = int(sampling_rate/1000 * step_ms)
     frame_count = int(len(signal) / frame_step)
