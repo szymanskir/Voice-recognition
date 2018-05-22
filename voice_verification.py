@@ -20,8 +20,11 @@ def verify_voice_sample(sample, database):
     distance = calculate_cluster_distance(sample, database)
     df = pandas.read_csv('cluster_distances.csv')
     series = df.loc[df['path'] == database]['distance']
+    print(distance)
+    print(series.iloc[0])
     return distance <= series.iloc[0]
 
 
-result = verify_voice_sample(sys.argv[1], sys.argv[2])
-print('Accepted' if result else 'Denied')
+if __name__ == "__main__":
+    result = verify_voice_sample(sys.argv[1], sys.argv[2])
+    print('Accepted' if result else 'Denied')
