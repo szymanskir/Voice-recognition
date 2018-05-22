@@ -17,7 +17,7 @@ def calculate_within_cluster_distance(filepath):
         for j in range(i+1, len(feature_vectors)):
             distances.append(DTW.dynamic_time_warping(feature_vectors[i], feature_vectors[j]))
 
-    return np.mean(distances)
+    return np.max(distances)
 
 
 if len(sys.argv) != 2:
