@@ -98,11 +98,6 @@ def get_filter_bank(sampling_rate, signal_length, count=24, lower_bound=0, upper
         for i in range(int(frequency_bins[j + 1]), int(frequency_bins[j + 2])):
             filter_bank[j, i] = (frequency_bins[j + 2] - i) / (frequency_bins[j + 2] - frequency_bins[j + 1])
 
-    #for j in range(0, count):
-    #   plt.plot(range(0,signal_length), filter_bank[j,:])
-
-    #plt.show()
-
     return filter_bank
 
 
@@ -143,6 +138,3 @@ def dct(y):
     c = np.fft.rfft(y2)
     phi = np.exp(-1j*np.pi*np.arange(N)/(2*N))
     return np.real(phi*c[:N])
-
-
-voice_feature_extraction('Baza_nagran/01/biometria/biometria01.wav')
