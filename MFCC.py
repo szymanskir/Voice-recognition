@@ -1,8 +1,7 @@
 import numpy as np
-import scipy.io.wavfile
 import scipy.fftpack
 import matplotlib.pyplot as plt
-
+import wave, struct
 
 def pre_emphasis(x, a=0.97):
     """
@@ -23,13 +22,23 @@ def voice_feature_extraction(infile):
     """
 
     # read audio file
-    sampling_rate, signal = scipy.io.wavfile.read(infile)
+
+    waveFile = wave.open(infile, 'r')
+    sampling_rate = waveFile.getframerate()
+
+    signal = list()
+    length = waveFile.getnframes()
+    for i in range(0, length):
+        waveData = waveFile.readframes(1)
+        data = struct.unpack("<h", waveData)
+        signal.append(int(data[0]))
+    signal = np.array(signal)
 
     # signal pre_emphasis
     signal = pre_emphasis(signal)
 
     # divide into n[ms] overlapping frames
-    n = 40
+    n = 30
     step_ms = 25
     samples_per_frame = int(sampling_rate/1000 * n)
     frame_step = int(sampling_rate/1000 * step_ms)
@@ -70,7 +79,7 @@ def MFCC(windowed_frame, sampling_rate):
     S = triangle_filters.dot(power_spectrum)
     S = np.where(S == 0, np.finfo(float).eps, S)
 
-    return lift(scipy.fftpack.dct(np.log(S), type=3, norm='ortho'))[1:12]
+    return dct(np.log(S))[1:12]
 
 
 def get_filter_bank(sampling_rate, signal_length, count=24, lower_bound=0, upper_bound=800):
@@ -124,3 +133,16 @@ def mel_to_frequency(mel):
     """
     return 700 * (10**(mel/2595.0) - 1)
 
+
+def dct(y):
+    N = len(y)
+    y2 = np.empty(2*N,float)
+    y2[:N] = y[:]
+    y2[N:] = y[::-1]
+
+    c = np.fft.rfft(y2)
+    phi = np.exp(-1j*np.pi*np.arange(N)/(2*N))
+    return np.real(phi*c[:N])
+
+
+voice_feature_extraction('Baza_nagran/01/biometria/biometria01.wav')
