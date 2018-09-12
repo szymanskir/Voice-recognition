@@ -2,7 +2,7 @@ import numpy as np
 
 def dynamic_time_warping(x, y):
     """
-    Measures the similarity between time series
+    Measures the similarity between time series change
     :param x: first time series
     :param y: second time series
     :return: measure of similarity
